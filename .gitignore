@@ -12,4 +12,3 @@ __pycache__/
 # Logs and run artifacts
 *.log
 transcripts/*.json
-transcripts/api_runs/

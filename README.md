@@ -143,21 +143,6 @@ pip install -r requirements.txt
 
 Runs the 5 required sample scenarios (plus a bonus error-injection scenario) through the compiled graph, prints the path taken for each, and writes transcripts to `transcripts/scenario_<n>_<slug>.json` plus a combined structured-log file — see [planning.md](planning.md) for the full scenario table and build order.
 
-## Web UI
-
-A small frontend wired directly to the graph, for testing arbitrary requests by hand instead of only the fixed demo scenarios.
-
-```powershell
-.venv\Scripts\python -m uvicorn cloud_assistant.api.server:app --reload
-```
-
-Then open **http://127.0.0.1:8000/** (pass `--port 8010` etc. if 8000 is already taken on your machine).
-
-- **Run** (`/`) — type a request (optionally an account id), hit Run. Quick-fill pills load any of the 11 acceptance scenarios. Shows the classification, the exact node route taken, which agents and which tools were called, the structured tool output, and the final answer.
-- **History** (`/logs`) — every run made from the Run page, newest first, with its route and its agents/tools called at a glance. Click a row for the full detail, including the raw decision log. Deep-linkable via `/logs?run=<id>`.
-
-Backend is `cloud_assistant/api/server.py` (FastAPI): `POST /api/run` executes one request through `build_graph()` and persists it; `GET /api/runs` / `GET /api/runs/{id}` read that history back. Each run's agent/tool activity is captured by tapping the same `log_decision(...)` calls the JSON-line logger already makes (see `cloud_assistant/api/capture.py`) — no node or tool code had to change. History is one JSON file per run under `transcripts/api_runs/` (gitignored), the same convention the demo script uses for its own scenario transcripts.
-
 ## Requirements
 
 LLM provider: **OpenAI** (`langchain-openai`, model id `openai:gpt-4o-mini`), configured via `OPENAI_API_KEY`. See [requirements.txt](requirements.txt) for the full package list (LangChain/LangGraph 1.0+, Pydantic v2).
