@@ -48,7 +48,7 @@ RESULT_KEYS: tuple[str, ...] = (
     "security_remediation_result",
 )
 
-ACCOUNTS: list[dict[str, str]] = [
+_DESCRIBED_ACCOUNTS: list[dict[str, str]] = [
     {
         "id": config.DEFAULT_ACCOUNT_ID,
         "label": "Default — waste and findings present",
@@ -70,6 +70,41 @@ ACCOUNTS: list[dict[str, str]] = [
         "note": "Tools return malformed payloads; the run degrades without crashing.",
     },
 ]
+
+
+def _build_accounts() -> list[dict[str, str]]:
+    """Every account the UI must be able to select, hand-described ones first.
+
+    The dropdown and the sample-request chips are both rendered from this
+    module's config, but they used to be built from two independent lists: the
+    chips from SCENARIOS, the dropdown from a hand-written constant. Any
+    scenario naming an account the constant did not list produced a chip that
+    set ``<select>.value`` to a value with no matching ``<option>`` — which
+    silently blanks a select rather than erroring, so the page then posted an
+    empty account_id and the request failed validation with a 422.
+
+    Deriving the tail of the list from SCENARIOS makes that class of drift
+    impossible: adding a scenario can no longer introduce an account the user
+    cannot pick.
+    """
+    accounts = list(_DESCRIBED_ACCOUNTS)
+    known = {account["id"] for account in accounts}
+    for scenario in SCENARIOS:
+        account_id = scenario["account_id"]
+        if account_id in known:
+            continue
+        known.add(account_id)
+        accounts.append(
+            {
+                "id": account_id,
+                "label": f"{account_id} — used by sample request '{scenario['slug']}'",
+                "note": scenario["covers"],
+            }
+        )
+    return accounts
+
+
+ACCOUNTS: list[dict[str, str]] = _build_accounts()
 
 _graph: Any = None
 
