@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(.venv\\\\Scripts\\\\python.exe -c \"import langchain, langgraph, pydantic; print\\(langchain.__version__, langgraph.__version__, pydantic.VERSION\\)\")",
+      "PowerShell($env:PYTHONPATH = \"D:\\\\cloud_assistant\"; .venv\\\\Scripts\\\\python.exe \"C:\\\\Users\\\\Disha\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--cloud-assistant\\\\27bd8eee-91e9-453b-a312-5430db14a582\\\\scratchpad\\\\api_probe.py\")"
+    ]
+  }
+}

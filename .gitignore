@@ -1,0 +1,15 @@
+# Virtualenvs
+.venv/
+venv/
+
+# Secrets
+.env
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Logs and run artifacts
+*.log
+transcripts/*.json
+transcripts/api_runs/

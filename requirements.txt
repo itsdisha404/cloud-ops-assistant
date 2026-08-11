@@ -1,0 +1,9 @@
+langchain>=1.0            # create_agent ReAct factory, core abstractions
+langgraph>=1.0             # StateGraph, add_conditional_edges, START/END
+langchain-openai>=0.2       # ChatOpenAI integration, used via "openai:..." model strings
+pydantic>=2.0                # state / tool / response_format schemas
+python-dotenv>=1.0           # load OPENAI_API_KEY from .env in local dev
+grandalf>=0.8                # ASCII graph rendering for graph.get_graph().draw_ascii()
+fastapi>=0.115               # web frontend: JSON API + SSE streaming of node updates
+uvicorn[standard]>=0.30      # ASGI server for the web frontend
+

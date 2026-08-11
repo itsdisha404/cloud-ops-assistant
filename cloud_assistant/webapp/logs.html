@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloud Ops Assistant — History</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><span class="dot"></span> Cloud Ops Assistant</div>
+    <nav class="tabs">
+      <a href="/">Run</a>
+      <a href="/logs" class="active">History</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Past runs</h2>
+    <p class="hint" style="margin-top:-8px; margin-bottom:14px;">Every request run from the Run page, with which agents and which tools it called. Click a row for the full detail.</p>
+    <div id="runs-table"></div>
+  </div>
+
+  <div class="card" id="detail-card" style="display:none">
+    <h2 id="detail-title">Run detail</h2>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+<script src="/static/history.js"></script>
+</body>
+</html>

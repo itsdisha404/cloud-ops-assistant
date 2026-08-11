@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cloud Operations Assistant</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>Cloud Operations Assistant</h1>
+    </div>
+    <div class="meta" id="meta"></div>
+  </header>
+
+  <main class="layout">
+    <!-- ── Composer ─────────────────────────────────────────────── -->
+    <section class="panel composer">
+      <h2>Write a query</h2>
+
+      <label class="field">
+        <span class="label">Request</span>
+        <textarea id="request" rows="5"
+          placeholder="e.g. Our AWS bill jumped 30% this month — find the waste and tell me what to shut off."></textarea>
+      </label>
+
+      <label class="field">
+        <span class="label">Account</span>
+        <select id="account"></select>
+        <span class="hint" id="account-note"></span>
+      </label>
+
+      <button id="run" class="run">Run query</button>
+
+      <div class="samples">
+        <span class="label">Sample requests</span>
+        <div id="samples" class="chips"></div>
+      </div>
+    </section>
+
+    <!-- ── Results ──────────────────────────────────────────────── -->
+    <section class="panel results">
+      <h2>
+        Graph traversal
+        <span id="status" class="status idle">idle</span>
+      </h2>
+
+      <!-- Mirrors the StateGraph: one supervisor, two lanes, a skip branch each. -->
+      <div class="pipeline" id="pipeline">
+        <div class="node" data-node="supervisor">
+          <span class="node-name">supervisor</span>
+          <span class="node-sub">classify</span>
+        </div>
+        <div class="fork">
+          <div class="lane">
+            <span class="edge-label">cost</span>
+            <div class="node" data-node="cost_analysis">
+              <span class="node-name">cost_analysis</span>
+              <span class="node-sub">spend + idle</span>
+            </div>
+            <div class="connector" data-connector="cost">idle ≥ 1</div>
+            <div class="node" data-node="cost_recommendation">
+              <span class="node-name">cost_recommendation</span>
+              <span class="node-sub">savings</span>
+            </div>
+          </div>
+          <div class="lane">
+            <span class="edge-label">security</span>
+            <div class="node" data-node="security_audit">
+              <span class="node-name">security_audit</span>
+              <span class="node-sub">buckets + IAM</span>
+            </div>
+            <div class="connector" data-connector="security">findings ≥ 1</div>
+            <div class="node" data-node="security_remediation">
+              <span class="node-name">security_remediation</span>
+              <span class="node-sub">fix plan</span>
+            </div>
+          </div>
+        </div>
+        <div class="node end" data-node="END"><span class="node-name">END</span></div>
+      </div>
+
+      <p class="path" id="path"></p>
+
+      <div id="output" class="output">
+        <p class="empty">Write a request and run it. Nodes light up as the graph reaches them —
+          a node that stays dim was skipped by a conditional edge.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
